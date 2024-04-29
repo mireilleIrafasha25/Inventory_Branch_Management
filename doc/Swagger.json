@@ -1,0 +1,286 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Inventory Management system",
+        "description": "This is the API Specification for the stock Management system backend.",
+        "contact": {
+            "email": "mireilleirafashan@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/mit"
+        },
+        "version": "1.0.0"
+    },
+    "externalDocs": {
+        "description": "Get source code",
+        "url": "https://github.com/mireilleIrafasha25/Financial-Tracker.git"
+    },
+    "basePath": "/api/Stock",
+    "servers": [
+        {
+            "url": "http://localhost:5002",
+            "description": "Local server"
+        },
+        {
+            "url": "https://financial-tracker-6qf6.onrender.com",
+            "description": "production server"
+        }
+    ],
+    "schemes": ["http", "https"],
+    "tags": [
+        {
+            "name": "Products",
+            "description": "Operation pertaining to product"
+        }
+    ],
+    "paths": {
+        "/products/addproduct": {
+            "post": {
+                "tags": ["Products"],
+                "summary": "Add a new product",
+                "description": "Creates a new product with  the provided details",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request -Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/list": {
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get all tasks",
+                "description": "Returns all the tasks",
+                "responses": {
+                    "200": {
+                        "description": "All the tasks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/UpdateProduct/{id}": {
+            "put": {
+                "tags": ["Products"],
+                "summary": "Update a product",
+                "description": "Updates a product with the provided details",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product Updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/GetProductByID/{id}": {
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get a product by id",
+                "description": "Returns a product with the provided id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/DeleteProduct/{id}": {
+            "delete": {
+                "tags": ["Products"],
+                "summary": "Delete a product",
+                "description": "Deletes a product with the provided id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Product"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the task"
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "Price of the product"
+                    }
+                }
+            },
+            "required":["name","description","price"]
+        }
+    }
+}
+   

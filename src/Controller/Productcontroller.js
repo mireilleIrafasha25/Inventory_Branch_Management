@@ -8,10 +8,10 @@ export const Addproduct=asyncWrapper(async(req,res,next)=>
     if(!errors.isEmpty())
     {
         console.log(errors.array());
-        return next(new BadRequestError(errors.array()[0]))
+         next(new BadRequestError(errors.array()[0]))
     }
     const newproduct=await ProductModel.create(req.body)
-   res.status(201).json({status:"success", product:newproduct})
+   res.status(201).json({newproduct})
     }
 );
 export const GetAllProduct = asyncWrapper(async(req, res,next)=>
@@ -21,7 +21,7 @@ export const GetAllProduct = asyncWrapper(async(req, res,next)=>
 }) 
 export const GetProductbyID=asyncWrapper(async(req, res, next)=>
 {
-    const product=await ProductModel.findById(req.query.id);
+    const product=await ProductModel.findById(req.params.id);
     if(!product)
     {
         return next(new NotFoundError("Product not found"));
@@ -30,7 +30,7 @@ export const GetProductbyID=asyncWrapper(async(req, res, next)=>
 })
 export const UpdateProduct= asyncWrapper(async(req,res,next)=>
 {
-    const product=await ProductModel.findByIdAndUpdate(req.query.id,req.body,{new:true})
+    const product=await ProductModel.findByIdAndUpdate(req.params.id,req.body,{new:true})
     if(!product)
     {
         return next(new NotFoundError("Product not found"))
@@ -38,7 +38,7 @@ export const UpdateProduct= asyncWrapper(async(req,res,next)=>
     res.status(200).json({product:product})
 })
 export const DeleteProduct=asyncWrapper(async(req,res,next) => {
-    const product=await ProductModel.findByIdAndDelete(req.query.id);
+    const product=await ProductModel.findByIdAndDelete(req.params.id);
     if(!product)
     {
         return next(new NotFoundError("Product not found"))

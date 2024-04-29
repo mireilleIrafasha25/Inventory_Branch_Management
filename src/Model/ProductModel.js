@@ -4,7 +4,8 @@ const Productschema=new schema(
     {
         name:{
             type:String,
-            required:false
+            required:true,
+            unique:true,
         },
         price:{
             type:Number,

@@ -2,8 +2,9 @@
 import asyncWrapper from "../Middleware/async.js";
 import { NotFoundError,BadRequestError } from "../Errors/index.js";
 import {validationResult} from 'express-validator'
-import InventoryLevelModel,{Update_stock_In} from "../Model/InventoryModel.js";
-export const Stock_in=(req,res)=>
+import InventoryLevelModel from "../Model/InventoryModel.js";
+import { Update_stock_In } from "../Utils/heiperfunction.js";
+export const Stock_in=asyncWrapper(async(req,res,next)=>
 {
     const {productID,quantity}=req.body;
     // Validate the request payload
@@ -11,7 +12,7 @@ export const Stock_in=(req,res)=>
     {
    return next(new BadRequestError("Invalid request ,please provide a valid productID and a positive quantity"))     
 }
-InventoryLevelModel.update_stock_In(productID, quantity)
+InventoryLevelModel.Update_stock_In(productID, quantity)
 .then(()=>
 {
     res.status(200).json({message:"Stock added successfully"})
@@ -20,7 +21,7 @@ InventoryLevelModel.update_stock_In(productID, quantity)
 {
     res.status(500).json({message:"Internal Server Error"})
 })
-}
+})
 
 // export const AddInventoryLevel=asyncWrapper(async(req,res,next)=>
 // {
