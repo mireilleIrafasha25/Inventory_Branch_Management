@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/api_docs",SwaggerUi.serve,SwaggerUi.setup(documentation))
-app.use("/api/stock",router)
+app.use("/stock",router)
 
 mongoose.connect(Configuration.db)
 .then(()=>

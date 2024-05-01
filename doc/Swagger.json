@@ -16,7 +16,7 @@
         "description": "Get source code",
         "url": "https://github.com/mireilleIrafasha25/Financial-Tracker.git"
     },
-    "basePath": "/api/Stock",
+    "basePath": "/Stock",
     "servers": [
         {
             "url": "http://localhost:5002",
