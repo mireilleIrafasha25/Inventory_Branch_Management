@@ -15,7 +15,21 @@ const Userschema= new schema(
         password:{
             type:String,
             required:true,
+        },
+        otp: {
+            type: Number,
+            required: false,
+        },
+        otpExpires: {
+            type: Date,
+            required: false,
+        },
+        verified: {
+            type: Boolean,
+            required: true,
+            default: false
         }
+
     }
 )
 const UserModel=mongoose.model('User',Userschema)

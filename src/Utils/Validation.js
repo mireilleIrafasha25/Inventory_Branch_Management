@@ -14,8 +14,7 @@ export const resetPasswordValidation=[
 ];
 export const otpValidation=[
 
-    body("otp","otp is required").not().isEmpty(),
-    body("otp","otp should contain 6 digits").isNumeric()
+    body("otp","otp is required").not().isEmpty()
 ]
 
 export const signUpValidation=[

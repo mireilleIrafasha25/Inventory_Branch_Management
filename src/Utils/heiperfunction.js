@@ -1,4 +1,4 @@
-export const Update_stock_In=(productID,quantity)=>
+const Update_stock_In=(productID,quantity)=>
 {
     return new Promise((resolve,reject)=>
 {
@@ -21,3 +21,5 @@ export const Update_stock_In=(productID,quantity)=>
 .catch((err)=>{reject(err);});
 })
 };
+
+export default Update_stock_In;

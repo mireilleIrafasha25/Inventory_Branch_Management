@@ -10,7 +10,7 @@ const TokenSchema= new Schema({
         ref:"User",
         required:true,
     },
-    exirationDate:
+    expirationDate:
     {
         type:Date,
         required:true,

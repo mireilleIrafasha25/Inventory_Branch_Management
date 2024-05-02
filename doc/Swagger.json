@@ -258,7 +258,275 @@
                     }
                 }
             }
+        },
+        "/user/signup":
+        {
+            "post":{
+              "tags":["Users"],
+              "summary":"Create a new user",
+              "description":"Create a new user",
+              "parameters": [
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                }
+            ],
+              "requestBody":{
+                "content":{
+                  "application/json":{
+                    "schema":{
+                      "$ref":"#/components/schemas/User"
+                    }
+                  }
+                }
+              },
+              "responses":{
+                "201":{
+                  "description":"User created",
+                  "content":{
+                    "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/User"
+                      }
+                    }
+                  }
+                },
+                "400":{
+                  "description":"Bad request -Validation error",
+                  "content":{
+                    "application/json":{
+                      "schema":{
+                        "type":"object",
+                        "properties":{
+                          "message":{
+                            "type":"string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "/user/signin":
+        {
+            "post":{
+      "tags":["Users"],
+      "summary":"Sign in a user",
+      "description":"Sign in a user",
+      "parameters": [
+        {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+                "$ref": "#/components/schemas/User"
+            }
+        }],
+        "requestBody":{
+            "content":{
+                "application/json":{
+                    "schema":{
+                        "$ref":"#/components/schemas/User"
+                    }
+                }
+            }
+        },
+        "responses":{
+            "201":{
+                "description":"User created",
+                "content":{
+                  "application/json":{
+                    "schema":{
+                      "$ref":"#/components/schemas/User"
+                    }
+                  }
+                }
+              },
+              "400":{
+                "description":"Bad request -Validation error",
+                "content":{
+                  "application/json":{
+                    "schema":{
+                      "type":"object",
+                      "properties":{
+                        "message":{
+                          "type":"string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+        
         }
+        
+    
+}
+        },
+        "/user/verify":
+    {
+        "post":{
+            "tags":["Users"],
+            "summary":"Verify a user",
+            "description":"Verify a user",
+            "parameters": [
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                }],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"User created",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "$ref":"#/components/schemas/User"
+                            }
+                          }
+                        }
+                      },
+                      "400":{
+                        "description":"Bad request -Validation error",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "type":"object",
+                              "properties":{
+                                "message":{
+                                  "type":"string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                }
+        }
+    },
+    "/user/forgotpassword":
+    {
+        "post":{
+        "tags":["Users"],
+        "summary":"Forgot password",
+        "description":"Forgot password",
+        "parameters": [
+            {
+                "name": "body",
+                "in": "body",
+                "required": true,
+                "schema": {
+                    "$ref": "#/components/schemas/User"
+                }
+            }],
+            "requestBody":{
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref":"#/components/schemas/User"
+                        }
+                    }
+                }
+            },
+            "responses":{
+                "201":{
+                    "description":"User created",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "$ref":"#/components/schemas/User"
+                        }
+                      }
+                    }
+                  },
+                  "400":{
+                    "description":"Bad request -Validation error",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "type":"object",
+                          "properties":{
+                            "message":{
+                              "type":"string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+            }
+    }
+},
+    "/user/resetpassword":{
+        "post":{
+            "tags":["Users"],
+            "summary":"Reset password",
+            "description":"Reset password",
+            "parameters": [
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                }],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"User created",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "$ref":"#/components/schemas/User"
+                            }
+                          }
+                        }
+                      },
+                      "400":{
+                        "description":"Bad request -Validation error",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "type":"object",
+                              "properties":{
+                                "message":{
+                                  "type":"string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                }
+        }
+    }
     },
     "components": {
         "schemas": {
@@ -277,10 +545,31 @@
                         "type": "number",
                         "description": "Price of the product"
                     }
+                },
+                "required":["name","description","price"]
+            },
+            "User":
+        {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the User"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email of the User"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password of the User"
                 }
             },
-            "required":["name","description","price"]
+            "required":["name","email","password"]
         }
+            
+        }
+        
     }
 }
    

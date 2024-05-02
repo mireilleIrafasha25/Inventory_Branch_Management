@@ -2,7 +2,7 @@ import UserModel from "../Model/Usermodel.js";
 import asyncWrapper from "../Middleware/async.js";
 import { otpGenerator } from "../Utils/otp.js";
 import {UnauthorizedError} from '../Errors/Unauthorized.js'
-import {BadRequestError} from "../Errors/index.js";
+import {BadRequestError,NotFoundError} from "../Errors/index.js";
 import {validationResult} from 'express-validator';
 import {sendEmail} from '../Utils/sendEmail.js'
 import bcryptjs from 'bcryptjs'
@@ -34,10 +34,11 @@ export const SignUp=asyncWrapper(async(req,res,next)=>
         name:req.body.name,
         email:req.body.email,
         password:hashedPassword,
+        otp: otp,
         otpExpires:otpExpirationDate,
     });
     const savedUser= await newUser.save();
-    console.log(savedUser);
+    // console.log(savedUser);
  await sendEmail(req.body.email,"Verify your account",`Your OTP is ${otp}`)
  if(savedUser)
  {
@@ -62,7 +63,7 @@ export const Validateopt=asyncWrapper(async(req,res,next)=>
         next(new UnauthorizedError('Authorization denied'));
     };
     // checking if otp is expired or not
-    if(FounderUser.otp.expires <new Date().getTime())
+    if(FounderUser.otp.expires < new Date().getTime())
     {
         next(new UnauthorizedError('OTP expired'));
     }
@@ -105,7 +106,7 @@ export const SignIn=asyncWrapper(async(req,res,next)=>
         return next(new BadRequestError('Invalid Email or password'))
     }
     //Generate token
-    const token = jwt.sign({id:FoundUser.id,email:FoundUser.email},process.env.JWT_SECRET, {expiresIn:'1h'});
+    const token = jwt.sign({id:FoundUser.id,email:FoundUser.email},process.env.JWT_SECRET_KEY, {expiresIn:'1h'});
 
     res.status(200).json({
         message:"User account verified!",
@@ -129,7 +130,7 @@ export const ForgotPassword=asyncWrapper(async(req,res,next)=>
         return next(new BadRequestError('Invalid Email or password'))
     }
     //Generate token
-    const token=jwt.sign({id:FoundUser.id},process.env.JWT_SECRET,{expiresIn:"15m"})
+    const token=jwt.sign({id:FoundUser.id},process.env.JWT_SECRET_KEY,{expiresIn:"15m"})
     //Recording the token to the database
     await Token.create({
         token:token,
@@ -146,22 +147,26 @@ export const ForgotPassword=asyncWrapper(async(req,res,next)=>
 });
 
 export const ResetPassword=asyncWrapper(async(req,res,next)=>
-{
+{ 
     const errors = validationResult(req)
+    
     if(!errors.isEmpty())
     {
         return next(new BadRequestError(errors.array()[0].msg))
     }
     //verify token
 
-    const decoded= await jwt.verify(req.body.token,process.env.JWT_SECRET)
+     const decoded= await jwt.verify(req.body.token,process.env.JWT_SECRET_KEY)
+    
     if(!decoded)
     {
         return next(new BadRequestError('Invalid token'));
     }
     const recordedToken=await Token.findOne({token:req.body.token})
-    if(!decoded!=req.body.id || recordedToken.user!=req.body.id)
+    
+    if(!decoded || decoded.id!=req.body.id || recordedToken.user!=req.body.id)
     {
+        
         return next(new BadRequestError('Invalid token'));
     }
     if(new Date(recordedToken.expirationDate).getTime() < new Date().getTime())
@@ -188,3 +193,22 @@ export const ResetPassword=asyncWrapper(async(req,res,next)=>
     }
 }
 )
+export const ListUser=asyncWrapper(async(req, res, next)=>
+{
+    const users=await UserModel.find();
+    res.status(200).json({user:users})
+})
+export const deleteUser=asyncWrapper(async(req,res,next)=>
+{
+    const deleteUser= await UserModel.findByIdAndDelete(req.params.id)
+    if(!deleteUser)
+    {
+        return next(new NotFoundError("User not found"))
+    }
+
+    return res.status(200).json({
+        message:"User account deleted!",
+        user:deleteUser
+    })
+
+})

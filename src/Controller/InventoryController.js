@@ -3,7 +3,7 @@ import asyncWrapper from "../Middleware/async.js";
 import { NotFoundError,BadRequestError } from "../Errors/index.js";
 import {validationResult} from 'express-validator'
 import InventoryLevelModel from "../Model/InventoryModel.js";
-import { Update_stock_In } from "../Utils/heiperfunction.js";
+//import Update_stock_In from "../Utils/heiperfunction.js";
 export const Stock_in=asyncWrapper(async(req,res,next)=>
 {
     const {productID,quantity}=req.body;
