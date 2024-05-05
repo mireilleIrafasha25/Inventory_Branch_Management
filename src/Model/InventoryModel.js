@@ -1,23 +1,35 @@
 import mongoose from 'mongoose';
 const schema=mongoose.Schema;
-// function to update inventory after stock in 
 
-
-const InventoryLevelSchema= new schema(
+const InventorySchema= new schema(
     {
-        productID:[
+        name:
         {
-       type:mongoose.Schema.Types.ObjectId,
-       ref:"Product",
-       required:true,
-        },],
-        quantity:
+            type:String,
+            required:true,
+            unique:true,
+        },
+        supplyDate:
+        {
+    type:Date,
+    required:true,
+        },
+        stock_Quantity:
         {
             type:Number,
-            required: false,
-        }
+            required:true,
+        },
+        unitOfMeasure:
+        {
+            type:String,
+            required:true,
+            enum:
+            {
+                values:["kg","g","ml","l","pcs"],
+                message:"Unit of measure must be kg,g,ml,l or pcs"
+            }
+        },
 
-    }
-)
-const  InventoryLevelModel= mongoose.model('Inventory',InventoryLevelSchema);
-export default InventoryLevelModel;
+    })
+    const InventoryModel=mongoose.model("Inventory",InventorySchema)
+    export default InventoryModel;

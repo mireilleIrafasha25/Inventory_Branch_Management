@@ -526,7 +526,822 @@
                       }
                 }
         }
+    },
+    "/order/addorder":
+    {
+        "post":{
+            "tags":["Orders"],
+            "summary":"Create a new order",
+            "description":"create a new order wiyh provided details",
+            "parameters":[
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/order"
+                    }
+                }
+            ],
+            "requestBody":{
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref":"#/components/schemas/order"
+                        }
+                    }
+                }
+            },
+            "responses":{
+                "201":{
+                    "description":"Order created",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "$ref":"#/components/schemas/order"
+                        }
+                      }
+                    }
+                  },
+                  "400":{
+                    "description":"Bad request -Validation error",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "type":"object",
+                          "properties":{
+                            "message":{
+                              "type":"string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+            }
+        }
+    },
+    "/order/ListOrders":{
+        "get":{
+            "tags":["Orders"],
+            "summary":"Get all orders",
+            "description":"Get all orders",
+            "responses":{
+                "200":{
+                    "description": "All the Orders",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/order"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "order/getById/{id}":{
+        "get":{
+            "tags":["Orders"],
+            "summary":"Get an order by id",
+            "description":"Get an order by id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Product found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Product not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    }},
+    "/order/Update_Order/{id}":
+    {
+        "put":{
+            "tags":["Orders"],
+            "summary":"Update an order",
+            "description":"Update an order",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody":{
+                    "parameters":[
+                        {
+                            "name": "body",
+                            "in": "body",
+                            "required": true,
+                            "schema": {
+                                "$ref": "#/components/schemas/order"
+                            }
+                        }
+                    ],
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/order"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"Order updated",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "$ref":"#/components/schemas/order"
+                            }
+                          }
+                        }
+                      },
+                      "400":{
+                        "description":"Bad request -Validation error",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "type":"object",
+                              "properties":{
+                                "message":{
+                                  "type":"string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                }
+        }
+    },
+    "/order/DeleteOrder/{id}":
+    {
+        "delete":{
+            "tags":["Orders"],
+            "summary":"Delete an order",
+            "description":"Delete an order with provided id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses":{
+                "200":{
+                    "description":"Order deleted",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "$ref":"#/components/schemas/order"
+                        }
+                      }
+                    }
+                  },
+                  "400":{
+                    "description":"Bad request -Validation error",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "type":"object",
+                          "properties":{
+                            "message":{
+                              "type":"string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+            }
+        }
+    },
+    "/supplier/Create":
+    {
+        "post":{
+            "tags":["Suppliers"],
+            "summary":"Create a new supplier",
+            "description":"create a new supplier wiyh provided details",
+            "parameters":[
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/supplier"
+                    }
+                }],
+                "requestBody":{
+                    "parameters":[
+                        {
+                            "name": "body",
+                            "in": "body",
+                            "required": true,
+                            "schema": {
+                                "$ref": "#/components/schemas/supplier"
+                            }
+                        }
+                    ],
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/supplier"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"Supplier created",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "$ref":"#/components/schemas/supplier"
+                            }
+                          }
+                        }
+                      },
+                      "400":{
+                        "description":"Bad request -Validation error",
+                        "content":{
+                          "application/json":{
+                            "schema":{
+                              "type":"object",
+                              "properties":{
+                                "message":{
+                                  "type":"string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                }
+        }
+    },
+    "/supplier/ListSuppliers":
+    {
+        "get":{
+            "tags":["Suppliers"],
+            "summary":"Get all suppliers",
+            "description":"Get all suppliers",
+            "responses": {
+                "200": {
+                    "description": "Suppliers found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/supplier"
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+    },
+    "/supplier/getSupplierById/{id}":{
+        "get":{
+            "tags":["Suppliers"],
+            "summary":"Get a supplier by id",
+            "description":"Get a supplier by id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Supplier found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/supplier"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Supplier not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    },
+    "/supplier/UpdateSupplier/{id}":
+    {
+        "put":{
+            "tags":["Suppliers"],
+            "summary":"Update a supplier",
+            "description":"Update a supplier with provided id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "requestBody":{
+                "parameters":[
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/supplier"
+                        }
+                    }
+                ],
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref":"#/components/schemas/supplier"
+                        }
+                    }
+                }
+            },
+            "responses":{
+                "200":{
+                    "description":"Supplier updated",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "$ref":"#/components/schemas/supplier"
+                        }
+                      }
+                    }
+                  },
+                  "404": {
+                    "description": "Supplier not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                  "400":{
+                    "description":"Bad request -Validation error",
+                    "content":{
+                      "application/json":{
+                        "schema":{
+                          "type":"object",
+                          "properties":{
+                            "message":{
+                              "type":"string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+            }
+        }
+    },
+    "/supplier/DeleteSupplier/{id}":
+    {
+        "delete":{
+            "tags":["Suppliers"],
+            "summary":"Delete a supplier",
+            "description":"Delete a supplier with provided id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses":{
+                "200":{
+                    "description":"Supplier deleted successfully",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/supplier"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/inventory/addInventory/{name}":
+    {
+        "post":{
+            "tags":["Inventory"],
+            "summary":"Add a new inventory",
+            "description":"Add a new inventory",
+            "parameters": [
+                {
+                    "name": "name",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody":{
+                    "parameters":[
+                        {
+                            "name": "body",
+                            "in": "body",
+                            "required": true,
+                            "schema": {
+                                "$ref": "#/components/schemas/inventory"
+                            }
+                        }
+                    ],
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/inventory"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description":"Inventory added successfully",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/inventory"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"Bad request -Validation error",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "message":{
+                                            "type":"string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    },
+    "/inventory/listAvailableProduct":
+    {
+        "get":{
+            "tags":["Inventory"],
+            "summary":"List all available products",
+            "description":"List all available products",
+            "responses":{
+                "200":{
+                    "description":"List of available products",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"array",
+                                "items":{
+                                    "$ref":"#/components/schemas/product"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/inventory/getInventory/{id}":
+    {
+        "get":{
+            "tags":["Inventory"],
+            "summary":"Get an inventory",
+            "description":"Get an inventory with provided id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses":{
+                "200":{
+                    "description":"Inventory found",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/inventory"
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Inventory not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/inventory/DeleteInventory/{id}":
+    {
+        "delete":{
+            "tags":["Inventory"],
+            "summary":"Delete an inventory",
+            "description":"Delete an inventory with provided id",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses":{
+                "200":{
+                    "description":"Inventory deleted successfully",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/inventory"
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Inventory not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sales/createSales":
+{
+"post":{
+    "tags":["Sales"],
+    "summary":"Create a new sales",
+    "description":"Create a new sales",
+    "requestBody":{
+        "parameters":[
+            {
+                "name": "body",
+                "in": "body",
+                "required": true,
+                "schema": {
+                    "$ref": "#/components/schemas/sales"
+                }
+            }
+        ],
+        "content":{
+            "application/json":{
+                "schema":{
+                    "$ref":"#/components/schemas/sales"
+                }
+            }
+        }
+    },
+    "responses":{
+        "201":{
+            "description":"Sales created successfully",
+            "content":{
+                "application/json":{
+                    "schema":{
+                        "$ref":"#/components/schemas/sales"
+                    }
+                }
+            }
+        }
     }
+}
+},
+    
+    "/sales/listSales":
+    {
+        "get":{
+            "tags":["Sales"],
+            "summary":"List all sales",
+            "description":"List all sales",
+            "responses":{
+                "200":{
+                    "description":"List of sales",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"array",
+                                "items":{
+                                    "$ref":"#/components/schemas/sales"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/sales/Update/{name}":
+    {
+"patch":
+{
+    "tags":["Sales"],
+    "summary":"Update a sales",
+    "description":"Update a sales",
+    "parameters": [
+        {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+        }],
+        "requestBody":{
+            "parameters":[
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/sales"
+                    }
+                }
+            ],
+            "content":{
+                "application/json":{
+                    "schema":{
+                        "$ref":"#/components/schemas/sales"
+                    }
+                }
+            }
+        },
+        "responses":{
+            "200":{
+                "description":"Sales updated successfully",
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "$ref":"#/components/schemas/sales"
+                        }
+                    }
+                }
+            },
+            "400":{
+                "description":"Bad request -Validation error",
+                "content":{
+                    "application/json":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "message":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+}
+    },
+    "/sales/Deletesale/{id}":
+    {
+        "delete":{
+            "tags":["Sales"],
+            "summary":"Delete a sales",
+            "description":"Delete a sales with provided id",
+            "parameters": [
+                {
+
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses":{
+                    "200":{
+                        "description":"Sales deleted successfully",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/sales"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Sales not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    }
+    
     },
     "components": {
         "schemas": {
@@ -566,6 +1381,138 @@
                 }
             },
             "required":["name","email","password"]
+        },
+        "order":
+        {
+        "type": "object",
+        "properties": {
+        "name":{
+            "type":"string",
+            "description":"name of ordered product "
+        },
+        "description":{
+            "type":"string",
+            "description":"description for ordered product"
+        },
+        "unitOfMeasure":
+        {
+            "type":"string",
+            "description":"unit of measurement for ordered product",
+            "enum":
+            {
+                
+                "values":["l", "kl","ml", "kg","g","mg"],
+                "message":"Unit of Measure must be 'l','kl','ml','kg','g','mg"
+            }
+        },
+        "quantity":
+        {
+            "type":"string",
+            "description":"stock quantity for ordered product"
+        },
+        "supplier":
+        {
+            "type":"mongoose.Types.ObjectId",
+            "description":"Supplier of product"
+        },
+        "Date":
+        {
+            "type":"object",
+            "orderDate":
+            {
+                "type":"date",
+                "description":"Date of order of product"
+            },
+            "deliveryDate":{
+                "type":"date",
+                "description":"Date of delivery of product"
+            }
+        },
+        "status":{
+            "type":"string",
+            "description":"Status of product",
+            "enum":{
+                "type":"object",
+                "values":["pending","deliverd","cancelled"]
+            }
+        }
+        },
+        "required":["name","quantity","supplier","Date","status"]
+        },
+        "supplier":{
+            "type":"object",
+            "properties":{
+                "name":{
+                    "type":"string",
+                    "description":"name of supplier"
+                },
+                "contact":{
+                    "type":"string",
+                    "description":"contact of supplier"
+                },
+                "address":{
+                    "type":"string",
+                    "description":"address of supplier"
+                }
+            },
+            "required":["name","contact","address"]
+        },
+        "inventory":
+        {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the Inventory"
+                },
+                "supplyDate": {
+                    "type": "date",
+                    "description": "date where product was supplied"
+                },
+                "stock_Quantity": {
+                    "type": "number",
+                    "description": "Price of the product"
+                },
+                "unitOfMeasure":{
+                    "type":"string",
+                    "description":"unit of measurement for ordered product",
+                    "enum":
+                    {
+                        
+                        "values":["l","ml", "kg","g","pcs"],
+                        "message":"Unit of Measure must be 'l',,'ml','kg','g','pcs'."
+                    }
+                }
+            },
+            "required":["name","unitOfMeasure","stock_Quantity","supplyDate"]
+        },
+        "sales":
+        {
+            "type":"object",
+            "properties":{
+                "name":{
+                    "type":"string",
+                    "description":"name of sales product "
+                },
+                "outflowDate":{
+                    "type":"date",
+                    "description":"outflowDate of product"
+                },
+                "unitOfMeasure":{
+                    "type":"string",
+                    "description":"unit of measurement for sales product",
+                    "enum":
+                    {
+                        
+                        "values":["l", "kl","ml", "kg","g","mg"],
+                        "message":"Unit of Measure must be 'l','kl','ml','kg','g','mg"
+                    }
+                },
+                "stock_Quantity":{
+                    "type":"number",
+                    "description":"stock quantity for sales product"
+                }
+            }
         }
             
         }

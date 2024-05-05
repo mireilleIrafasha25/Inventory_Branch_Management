@@ -1,94 +1,72 @@
+import InventoryModel from "../Model/InventoryModel.js";
 
 import asyncWrapper from "../Middleware/async.js";
+
 import { NotFoundError,BadRequestError } from "../Errors/index.js";
+
 import {validationResult} from 'express-validator'
-import InventoryLevelModel from "../Model/InventoryModel.js";
-//import Update_stock_In from "../Utils/heiperfunction.js";
-export const Stock_in=asyncWrapper(async(req,res,next)=>
+
+export const Update_Stock= asyncWrapper(async(req,res,next)=>
 {
-    const {productID,quantity}=req.body;
-    // Validate the request payload
-    if(!productID || !quantity || quantity<=0) 
+    const errors=validationResult(req);
+        
+            if(!errors.isEmpty())
+            {
+                next(new BadRequestError(errors.array()[0].msg))
+            }
+        const {name,stock_Quantity,unitOfMeasure}=req.body;
+        //set supply Date to the current date if not provided in the requested body
+        const currentDate=new Date().toLocaleDateString();
+
+        const existingStock=await InventoryModel.findOne({name:name})
+        if(existingStock)
+            {
+                //Update the existing stock quantity
+                existingStock.stock_Quantity += stock_Quantity;
+                await existingStock.save();
+                res.status(200).json({
+        message:"Stock quantity updated successfully" ,
+        data:existingStock                   
+
+                });
+            }
+            else{
+                //create new stock record
+                const newStock=await InventoryModel.create(
+                    {
+                    name:name,
+                    stock_Quantity:stock_Quantity,
+                    unitOfMeasure:unitOfMeasure,
+                    supplyDate:currentDate
+                    }
+                );
+                res.status(201).json({
+                    message:"New stock record created successfully",
+                    data:newStock
+                });
+            }
+});
+export const AllInventory=asyncWrapper(async(req, res, next)=>
+{
+    const inventory=await InventoryModel.find();
+    res.status(200).json({ inventory:inventory})
+});
+export const DeleteInventory=asyncWrapper(async(req, res, next)=>{
+
+    const inventory=await InventoryModel.findByIdAndDelete(req.params.id);
+    if(!inventory)
     {
-   return next(new BadRequestError("Invalid request ,please provide a valid productID and a positive quantity"))     
-}
-InventoryLevelModel.Update_stock_In(productID, quantity)
-.then(()=>
+        return next(new NotFoundError("Inventory not found"));
+    }
+    res.status(200).json({inventory:inventory})
+})
+
+export const GetInventorybyID=asyncWrapper(async(req, res, next)=>
 {
-    res.status(200).json({message:"Stock added successfully"})
+    const inventory=await InventoryModel.findById(req.params.id);
+    if(!inventory)
+    {
+        return next(new NotFoundError("Inventory not found"));
+    }
+    res.status(200).json({inventory:inventory})
 })
-.catch((err)=>
-{
-    res.status(500).json({message:"Internal Server Error"})
-})
-})
-
-// export const AddInventoryLevel=asyncWrapper(async(req,res,next)=>
-// {
-//     const errors= validationResult(req);
-//     if(!errors.isEmpty())
-//     {
-//         console.log(errors.array());
-//         return next(new BadRequestError(errors.array()[0]))
-//     }
-//     const newInventoryLevel=await InventoryLevelModel.create(req.body);
-//     res.status(201).json({newInventoryLevel})
-// })
-
-// Get current inventory Level of  a Product
-// export const GetInventoryLevel=asyncWrapper(async(req,res,next)=>
-// {
-//     const errors= validationResult(req)
-//     if(errors.isEmpty())
-//     {
-//         return next(errors.array())
-//     }
-//     const ProductId=req.query.id
-//     const InventoryLevel=await InventoryLevelModel.findOne({product:ProductId})
-//     if(!InventoryLevel)
-//     {
-//         return next(new NotFoundError("Product not found"))
-//     }
-//     return res.status(200).json({InventoryLevel})
-
-// })
-
-// Update inventory level for a product (when new stock arrives or items are sold)
-
-// export const UpdateInventoryLevel=asyncWrapper(async(req,res,next)=>
-// {
-//    const ProductID=req.query.id
-//     const quantity= req.body
-//     let inventoryLevel=await InventoryLevelModel.findOne(ProductID)
-//     if(!inventoryLevel)
-//     {
-//         inventoryLevel = new InventoryLevelModel(ProductID)
-//     }
-//     inventoryLevel.quantity=quantity
-//     await inventoryLevel.save()
-// })
-
-// export const ListItem=asyncWrapper(async(req,res,next)=>
-// {
-//     const Item=await InventoryModel.find()
-//     return res.status(200).json({Item})
-// })
-// export const GetItembyID=asyncWrapper(async(req,res,next)=>
-// {
-//     const Item=await InventoryModel.findById(req.query.item)
-//     if(!Item)
-//     {
-//         return next(new NotFoundError("Item not found"))
-//     } 
-//     res.status(200).json({Item})
- 
-// })
-
-// export const DeleteItem=asyncWrapper(async(req,res,next)=>
-// {
-// const Item=await InventoryModel.findByIdAndDelete(req.query.id)
-// if(!Item)
-// {
-//     return next(new NotFoundError("Item not found"))
-// }
-// })

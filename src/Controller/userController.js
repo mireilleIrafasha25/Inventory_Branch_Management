@@ -146,69 +146,41 @@ export const ForgotPassword=asyncWrapper(async(req,res,next)=>
     });
 });
 
-export const ResetPassword=asyncWrapper(async(req,res,next)=>
-{ 
-    const errors = validationResult(req)
-    
-    if(!errors.isEmpty())
-    {
-        return next(new BadRequestError(errors.array()[0].msg))
+export const ResetPassword = asyncWrapper(async (req, res, next) => {
+    // Validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(new BadRequestError(errors.array()[0].msg));
+    };
+    // Verify token
+    const decoded = await jwt.verify(req.body.token, process.env.JWT_SECRET_KEY);
+    if (!decoded) {
+        return next(new BadRequestError("Invalid token!"));
     }
-    //verify token
-
-     const decoded= await jwt.verify(req.body.token,process.env.JWT_SECRET_KEY)
-    
-    if(!decoded)
-    {
-        return next(new BadRequestError('Invalid token'));
+    const recordedToken = await Token.findOne({ token: req.body.token });
+    if (decoded.id!= req.body.id || recordedToken.user!= req.body.id) {
+        return next(new BadRequestError("Invalid token!"));
     }
-    const recordedToken=await Token.findOne({token:req.body.token})
-    
-    if(!decoded || decoded.id!=req.body.id || recordedToken.user!=req.body.id)
-    {
-        
-        return next(new BadRequestError('Invalid token'));
+    if (new Date(recordedToken.expirationDate).getTime() < new Date().getTime()) {
+        return next(new BadRequestError("Token expired!"));
     }
-    if(new Date(recordedToken.expirationDate).getTime() < new Date().getTime())
-    {
-       return next(new BadRequestError('Token expired')); 
-    }
-    // find User
-    const FoundUser=await UserModel.findById(req.body.id)
-    if(!FoundUser)
-    {
-        return next(new BadRequestError('User not found'));
-    }
-    // Harshing the user token
-    const hashedPassword = await bcryptjs.hashSync(req.body.password,10);
-    FoundUser.password=hashedPassword;
-    //Updating the user password
-    FoundUser.password=hashedPassword;
-    const savedUser=await FoundUser.save();
-    if(savedUser)
-    {
+    // Find user
+    const foundUser = await UserModel.findById(req.body.id);
+    if (!foundUser) {
+        return next(new BadRequestError("User not found!"));
+    };
+    // Deleting the user token
+    await Token.deleteOne({ token: req.body.token });
+    // Harshing the user password
+    const inputedPassword = await bcryptjs.hashSync(req.body.password, 10);
+    // Updating the user password
+    foundUser.password = inputedPassword;
+    const savedUser = await foundUser.save();
+    if (savedUser) {
         return res.status(200).json({
-            message:"Your Password has been  reset",
+            message: "Your password has been reset!",
         })
     }
-}
-)
-export const ListUser=asyncWrapper(async(req, res, next)=>
-{
-    const users=await UserModel.find();
-    res.status(200).json({user:users})
-})
-export const deleteUser=asyncWrapper(async(req,res,next)=>
-{
-    const deleteUser= await UserModel.findByIdAndDelete(req.params.id)
-    if(!deleteUser)
-    {
-        return next(new NotFoundError("User not found"))
-    }
+   });
 
-    return res.status(200).json({
-        message:"User account deleted!",
-        user:deleteUser
-    })
 
-})

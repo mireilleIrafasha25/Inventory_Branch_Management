@@ -1,11 +1,11 @@
-import express from 'express';
-import {Stock_in} from '../Controller/InventoryController.js';
-const router = express.Router();
-// router.get('/GetCurrentStock',GetInventoryLevel)
-//  router.put('/UpdateItem',UpdateInventoryLevel)
-//  router.get('/AddnewInventory',AddInventoryLevel)
+import express  from 'express';
+const route= express.Router()
+import{AllInventory,Update_Stock,DeleteInventory,GetInventorybyID} from '../Controller/InventoryController.js'
+route.patch('/addInventory/:name',Update_Stock)
+route.get('/listAvailableProduct',AllInventory)
+route.delete('/DeleteInventory/:id',DeleteInventory)
+route.get('/getInventory/:id',GetInventorybyID)
 
-router.post('/Stock_in',Stock_in)
+export default route;
 
-export default router;
 
